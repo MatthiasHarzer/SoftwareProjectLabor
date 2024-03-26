@@ -123,13 +123,12 @@ char* putBack(char c, char* s) {
 // Baue einen neuen String welcher die Umkehrung des Eingabestrings ist.
 // Hinweis: Die Implementierung soll rekursiv sein und die Hilfsroutine putBack verwenden.
 char* rev(char* s) {
+    if (*s == '\0') return "\n";
 
     char first = s[0];
     s++;
 
-
-
-    return *s + rev(s);
+    return putBack(first, rev(s));
 }
 
 
@@ -309,7 +308,8 @@ void invariantenTests() {
 
 int main(){
     char* test = "Ha Ll o o";
-    char* new = putBack('!', test);
+//    char* new = putBack('!', test);
+char* new = rev(test);
 
     printf("Orig: %s Copy: %s", test, new);
 
