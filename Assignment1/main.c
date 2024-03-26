@@ -13,7 +13,7 @@ char* putFront(char c, char* s);
 char* reverse(char* s);
 char* putBack(char c, char* s);
 char* rev(char* s);
-void replace(char* s, struct OldNew* m, int n);
+char* replace(char* s, struct OldNew* m, int n);
 char* show(enum Bool b);
 enum Bool strCmp(char* s1, char* s2);
 
@@ -57,6 +57,7 @@ char* normalisiere(char* s) {
 
         normalized[normalizedIdx++] = c;
     }
+    normalized[size] = '\0';
 
     return normalized;
 }
@@ -78,6 +79,7 @@ char* copyStr(char* s) {
     int len = length(s);
     char* cpy = (char*) malloc(len);
     copy(s, len, cpy);
+    cpy[len] = '\0';
     return cpy;
 
 //    int i = 0;
@@ -123,7 +125,7 @@ char* putBack(char c, char* s) {
 // Baue einen neuen String welcher die Umkehrung des Eingabestrings ist.
 // Hinweis: Die Implementierung soll rekursiv sein und die Hilfsroutine putBack verwenden.
 char* rev(char* s) {
-    if (*s == '\0') return "\n";
+    if (*s == '\0') return "\0";
 
     char first = s[0];
     s++;
@@ -140,8 +142,24 @@ struct OldNew {
 
 // Ersetze in einem String jedes Zeichen 'old' mit dem Zeichen 'new'.
 // Die Zeichen 'old' und 'new' sind definiert in einem Array vom Typ struct OldNew.
-void replace(char* s, struct OldNew* m, int n) {
-    // TODO
+char* replace(char* s, struct OldNew* m, int n) {
+    int len = length(s);
+    char* cpy = copyStr(s);
+    for(int i = 0; i < n; i++){
+        struct OldNew entry = m[i];
+
+        for(int j = 0; j < len; j++) {
+
+
+            if (cpy[j] == entry.old) {
+                cpy[j] = entry.new;
+            }
+        }
+    }
+//    copy(cpy, len, s);
+
+    return cpy;
+
 }
 
 enum Bool {
@@ -160,7 +178,16 @@ char* show(enum Bool b) {
 
 // Teste ob zwei Strings identisch sind.
 enum Bool strCmp(char* s1, char* s2) {
-    // TODO
+    int len1 = length(s1);
+    int len2 = length(s2);
+    if (len1 != len2)
+        return False;
+
+    for(int i = 0; i < len1; i++){
+        if (s1[i] != s2[i]) return False;
+    }
+
+    return True;
 }
 
 
@@ -189,13 +216,13 @@ void userTests() {
 
     printf("\n5. %s", s6);
 
-    char s7[] = "Aa dss fBB";
+    char* s7 = "Aa dss fBB";
 
     printf("\n6. %s", s7);
 
     struct OldNew m[] = { {'B', 'b'}, {'s', '!'}};
 
-    replace(s7, m, 2);
+    s7 = replace(s7, m, 2);
 
     printf("\n7. %s", s7);
 
@@ -273,7 +300,7 @@ char* rndString() {
         int c = rand() % 26;
         s[i] = (char)(c + lowHigh);
     }
-    s[n] = '\n';
+    s[n] = '\0';
 
     return s;
 }
@@ -290,9 +317,9 @@ void invariantenTests() {
         char* n3 = reverse(n2);
 
         if(True == strCmp(n1,n3)) {
-            printf("Okay %s", s);
+            printf("Okay %s\n", s);
         } else {
-            printf("Fail %s", s);
+            printf("Fail %s\n", s);
         }
 
         free(s);
@@ -306,22 +333,31 @@ void invariantenTests() {
 
 }
 
-int main(){
-    char* test = "Ha Ll o o";
-//    char* new = putBack('!', test);
-char* new = rev(test);
-
-    printf("Orig: %s Copy: %s", test, new);
-
-//    char* normalized = normalisiere(test);
-//    printf("%s", normalized);
-
-    return 0;
-}
-//int main() {
-//    userTests();
+//int main(){
+//    struct OldNew m[] = { {'B', 'b'}, {'s', '!'}};
+//    //    char* test = "Ha Ll o o";
+//    char* test = "Aa dss fBB";
+//    char* test2 = "Aa dss fBB";
 //
-//    unitTests();
+//    printf("%s\n", show(strCmp(test,test2)));
 //
-//    invariantenTests();
+//    //    char* new = putBack('!', test);
+//    //char* new = rev(test);
+////    char* orig = copyStr(test);
+//    char* replaced = replace(test, m, 2);
+//    printf("%s\n", show(strCmp(test,replaced)));
+//
+//    printf("Orig: %s Reversed: %s", test, replaced);
+//
+////    char* normalized = normalisiere(test);
+////    printf("%s", normalized);
+//
+//    return 0;
 //}
+int main() {
+    userTests();
+
+    unitTests();
+
+    invariantenTests();
+}
