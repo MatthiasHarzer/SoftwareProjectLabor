@@ -125,7 +125,8 @@ char* putBack(char c, char* s) {
 // Baue einen neuen String welcher die Umkehrung des Eingabestrings ist.
 // Hinweis: Die Implementierung soll rekursiv sein und die Hilfsroutine putBack verwenden.
 char* rev(char* s) {
-    if (*s == '\0') return "\0";
+    // What about the '\0'? Why does it work without?
+    if (*s == '\0') return "";
 
     char first = s[0];
     s++;
