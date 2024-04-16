@@ -17,6 +17,7 @@ char* replace(char* s, struct OldNew* m, int n);
 char* show(enum Bool b);
 enum Bool strCmp(char* s1, char* s2);
 
+const char LOWER_CASE_OFFSET = 'a' - 'A';
 
 
 // Anzahl aller Zeicher (ohne Null-terminator).
@@ -37,14 +38,14 @@ int length(char *s) {
 // 3. Kleinbuchstaben bleiben unveraendert.
 // Annahme: C String besteht nur aus Klein-/Grossbuchstaben und Leerzeichen.
 char* normalisiere(char* s) {
-    char lowerCaseOffset = 'a' - 'A';
+
     int size = 0;
     for(int i = 0; i < length(s); i++){
         if (s[i] != ' ') {
             size++;
         }
     }
-    char* normalized = (char*) malloc(size);
+    char* normalized = (char*) malloc(size + 1);
 
     int normalizedIdx = 0;
     for(int i = 0; i< length(s); i++){
@@ -52,7 +53,7 @@ char* normalisiere(char* s) {
         if(c == ' ') continue;
 
         if (c >= 'A' && c <= 'Z') {
-            c += lowerCaseOffset;
+            c += LOWER_CASE_OFFSET;
         }
 
         normalized[normalizedIdx++] = c;
@@ -77,18 +78,10 @@ void copy(char* s, int n, char* t) {
 // Baue neuen String welcher eine Kopie des Eingabestrings ist.
 char* copyStr(char* s) {
     int len = length(s);
-    char* cpy = (char*) malloc(len);
+    char* cpy = (char*) malloc(len + 1);
     copy(s, len, cpy);
     cpy[len] = '\0';
     return cpy;
-
-//    int i = 0;
-//    while(*s != '\0') {
-//        copy[i] = s[i];
-//        i++;
-//        s++;
-//    }
-//    return copy;
 }
 
 // Baue neuen String welcher mit Zeichen c startet gefolgt von allen Zeichen in s.
@@ -119,19 +112,38 @@ char* reverse(char* s) {
 char* putBack(char c, char* s) {
     char* reversed = reverse(s);
     char* atFront = putFront(c, reversed);
-    return reverse(atFront);
+    char* atBack = reverse(atFront);
+
+    free(reversed);
+    free(atFront);
+
+    return atBack;
 }
 
 // Baue einen neuen String welcher die Umkehrung des Eingabestrings ist.
 // Hinweis: Die Implementierung soll rekursiv sein und die Hilfsroutine putBack verwenden.
 char* rev(char* s) {
-    // What about the '\0'? Why does it work without?
-    if (*s == '\0') return "";
+    if (*s == '\0') {
+        return "";
+//        return copyStr(s);
+//        char* empty = (char*) malloc(1);
+//        empty[0] = '\0';
+//        return empty;
+    };
 
     char first = s[0];
     s++;
 
-    return putBack(first, rev(s));
+
+    char* reversed = rev(s);
+
+    char* firstAtBack = putBack(first, reversed);
+
+    if(*s != '\0'){
+        free(reversed);
+    }
+
+    return firstAtBack;
 }
 
 
