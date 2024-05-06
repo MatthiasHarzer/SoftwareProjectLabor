@@ -2,91 +2,126 @@
 #define __DYNARR__
 
 #include <iostream>
+
 using namespace std;
 
 template<typename T>
-void copy_(T* s, int n, T* t) {
-  int i = 0;
-  while(i < n) {
-    t[i] = s[i];
-    i++;
-  }
+void copy_(T *s, int n, T *t) {
+    int i = 0;
+    while (i < n) {
+        t[i] = s[i];
+        i++;
+    }
 }
 
 
 template<typename T>
 class DynArr {
-  int len;
-  T* p;
+    int len;
+    T *p;
 
 public:
 
-  DynArr() {
-    this->len = 0;
-    this->p = nullptr;
-  }
-  DynArr(T x, int size) {
-    this->len = size;
-    this->p = new T[size];
-
-    for(int i=0; i<size; i++) {
-      this->p[i] = x;
+    DynArr() {
+        this->len = 0;
+        this->p = nullptr;
     }
-  }
-  DynArr(const DynArr<T>& src) {
-    this->len = src.len;
-    this->p = new T[src.len];
-    copy_(src.p, src.len, this->p);
-  }
-   DynArr<T>& operator=(const DynArr<T>& src) {
-   // TODO
-  }
-  DynArr(DynArr<T>&& src) {
-      this->len = src.p;
-      this->p = src.p;
-  }
-  DynArr<T>& operator=(DynArr<T>&& src) {
 
-      if(this != &src){
-          delete this->len;
-          delete[] this->p;
+    DynArr(T x, int size) {
+        this->len = size;
+        this->p = new T[size];
 
-          this.
-      }
-  }
-
-
-  ~DynArr() { delete[] p; }
-
-  T& operator[](int index) {
-    return p[index];
-  }
-
-
-  int size() const {
-      return this->len;
-  }
-
-  string show() {
-    string s;
-    for(int i=0; i<this->len; i++) {
-      s = s + to_string(p[i]);
+        for (int i = 0; i < size; i++) {
+            this->p[i] = x;
+        }
     }
-    return s;
-  }
+
+    DynArr(const DynArr<T> &src) {
+        this->len = src.len;
+        this->p = new T[src.len];
+        copy_(src.p, src.len, this->p);
+    }
+
+    DynArr<T> &operator=(const DynArr<T> &src) {
+        if (this != &src) {
+            delete[] this->p;
+            this->len = src.len;
+            this->p = new T[src.len];
+            copy_(src.p, src.len, this->p);
+        }
+        return *this;
+    }
+
+    DynArr(DynArr<T> &&src) {
+        this->len = src.len;
+        this->p = src.p;
+        src.p = nullptr;
+    }
+
+    DynArr<T> &operator=(DynArr<T> &&src) {
+
+        if (this != &src) {
+            delete[] this->p;
+            this->len = src.len;
+            this->p = src.p;
+            src.p = nullptr;
+        }
+        return *this;
+    }
 
 
-  void add(T x) {
-   // TODO
-  }
+    ~DynArr() {
+        delete[] p;
+    }
 
-  void reverse() {
-  // TODO
-  }
+    T &operator[](int index) {
+        return p[index];
+    }
 
-  void append(const DynArr<T>& src) {
-  // TODO
-  }
+
+    int size() const {
+        return this->len;
+    }
+
+    string show() {
+        string s;
+        for (int i = 0; i < this->len; i++) {
+            s = s + to_string(p[i]);
+        }
+        return s;
+    }
+
+
+    void add(T x) {
+        T *temp = new T[this->len + 1];
+        copy_(this->p, this->len, temp);
+        temp[this->len] = x;
+        delete[] this->p;
+        this->p = temp;
+        this->len++;
+    }
+
+    void reverse() {
+        T *temp = new T[this->len];
+        for (int i = 0; i < this->len; i++) {
+            temp[i] = this->p[this->len - i - 1];
+        }
+        delete[] this->p;
+        this->p = temp;
+    }
+
+    void append(const DynArr<T> &src) {
+        T *temp = new T[this->len + src.len];
+        copy_(this->p, this->len, temp);
+
+        for (int i = 0; i < src.len; i++) {
+            temp[this->len + i] = src.p[i];
+        }
+
+        delete[] this->p;
+        this->p = temp;
+        this->len += src.len;
+    }
 
 };
 

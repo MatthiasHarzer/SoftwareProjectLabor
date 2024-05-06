@@ -82,12 +82,9 @@ void example2() {
 
 
 int main() {
-
     cout << "\n\n *** example1 *** \n";
     example1();
 
     cout << "\n\n *** example2 *** \n";
     example2();
-
-
 }
