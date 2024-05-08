@@ -41,7 +41,6 @@ public:
         this->p = new T[src.len];
         copy_(src.p, src.len, this->p);
     }
-
     DynArr<T> &operator=(const DynArr<T> &src) {
         if (this != &src) {
             delete[] this->p;
@@ -56,6 +55,7 @@ public:
         this->len = src.len;
         this->p = src.p;
         src.p = nullptr;
+        src.len = 0;
     }
 
     DynArr<T> &operator=(DynArr<T> &&src) {
@@ -65,6 +65,7 @@ public:
             this->len = src.len;
             this->p = src.p;
             src.p = nullptr;
+            src.len = 0;
         }
         return *this;
     }
