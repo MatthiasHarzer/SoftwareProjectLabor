@@ -13,14 +13,14 @@ void display(Optional<EXP> e) {
     if(e.isNothing()) {
         cout << "nothing \n";
     } else {
-        cout << (e.fromJust())->pretty() << "\n";
+        cout << (e.fromJust())->pretty() << " / " << (e.fromJust())->smartPretty() << "\n";
     }
     return;
 }
 
 void testParserGood() {
 
-    /*
+
     display(Parser("1").parse());
 
     display(Parser("1 + 0 ").parse());
@@ -30,9 +30,11 @@ void testParserGood() {
     display(Parser("1 + 2 * 0 ").parse());
 
     display(Parser("1 * 2 + 0 ").parse());
-    */
 
-    display(Parser("(1 + 2) * 0 ").parse());
+
+    display(Parser("1 + 2 * 2").parse());
+
+    display(Parser("(1 + 2) * 2").parse());
 
     display(Parser("(1 + 2) * 0 + 2").parse());
 }

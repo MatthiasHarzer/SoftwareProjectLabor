@@ -44,9 +44,9 @@ void testVM() {
 }
 
 
-int main() {
-
-    testVM();
-
-    return 1;
-}
+//int main() {
+//
+//    testVM();
+//
+//    return 1;
+//}
