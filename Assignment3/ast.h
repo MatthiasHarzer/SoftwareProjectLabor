@@ -12,7 +12,6 @@ using namespace std;
 
 class Exp {
 public:
-    virtual string smartPretty(bool) = 0;
     virtual int eval() = 0;
     virtual string pretty() = 0;
     virtual string smartPretty() = 0;
@@ -24,7 +23,6 @@ public:
     IntExp(int _val) { val = _val; }
     int eval();
     string pretty();
-    string smartPretty(bool);
     string smartPretty();
 };
 
@@ -37,7 +35,6 @@ public:
     }
     int eval();
     string pretty();
-    string smartPretty(bool);
     string smartPretty();
 };
 
@@ -45,7 +42,6 @@ public:
 class MultExp : public Exp {
     std::shared_ptr<Exp> e1;
     std::shared_ptr<Exp> e2;
-    string smartPretty(bool);
 public:
     MultExp(std::shared_ptr <Exp> _e1, std::shared_ptr<Exp> _e2) {
         e1 = _e1; e2 = _e2;

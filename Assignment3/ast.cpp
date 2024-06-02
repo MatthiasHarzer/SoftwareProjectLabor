@@ -11,10 +11,6 @@ string IntExp::pretty() {
     return to_string(val);
 }
 
-string IntExp::smartPretty(bool _) {
-    return pretty();
-}
-
 string IntExp::smartPretty() {
     return pretty();
 }
@@ -29,23 +25,12 @@ string PlusExp::pretty() {
     s.append(")");
     return s;
 }
-string PlusExp::smartPretty(bool withBrackets) {
+string PlusExp::smartPretty() {
     string s;
-    if (withBrackets) {
-        s.append("(");
-    }
     s.append(e1->smartPretty());
     s.append("+");
     s.append(e2->smartPretty());
-    if (withBrackets) {
-        s.append(")");
-    }
     return s;
-
-
-}
-string PlusExp::smartPretty() {
-    return smartPretty(false);
 }
 
 
@@ -60,17 +45,36 @@ string MultExp::pretty() {
     return s;
 }
 
-string MultExp::smartPretty(bool _) {
-     string s;
-    s.append(e1 -> smartPretty(true));
+string MultExp::smartPretty() {
+    bool e1IsPlus = typeid(*e1) == typeid(PlusExp);
+    bool e2IsPlus = typeid(*e2) == typeid(PlusExp);
+
+    string e1s = e1->smartPretty();
+    string e2s = e2->smartPretty();
+
+    string s;
+    if(e1IsPlus){
+        s.append("(");
+        s.append(e1s);
+        s.append(")");
+    } else {
+        s.append(e1s);
+    }
+
     s.append("*");
-    s.append(e2 -> smartPretty(true));
+
+    if(e2IsPlus) {
+        s.append("(");
+        s.append(e2s);
+        s.append(")");
+    } else {
+        s.append(e2s);
+    }
     return s;
 }
 
-string MultExp::smartPretty() {
-   return smartPretty(false);
-}
+
+
 
 EXP newInt(int i) {
     return std::make_shared<IntExp>(i);
