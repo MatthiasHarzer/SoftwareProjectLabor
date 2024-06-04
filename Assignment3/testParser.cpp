@@ -47,9 +47,9 @@ void testParser() {
 }
 
 
-int main() {
-
-    testParser();
-
-    return 1;
-}
+//int main() {
+//
+//    testParser();
+//
+//    return 1;
+//}

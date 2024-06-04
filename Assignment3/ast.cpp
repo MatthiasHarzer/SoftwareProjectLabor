@@ -15,6 +15,12 @@ string IntExp::smartPretty() {
     return pretty();
 }
 
+vector<Code> IntExp::toVm() {
+    return {
+        newPush(val)
+    };
+}
+
 int PlusExp::eval() { return e1->eval() + e2->eval(); }
 
 string PlusExp::pretty() {
@@ -31,6 +37,16 @@ string PlusExp::smartPretty() {
     s.append("+");
     s.append(e2->smartPretty());
     return s;
+}
+
+vector<Code> PlusExp::toVm() {
+    vector<Code> vc;
+    vector<Code> e1vc = e1->toVm();
+    vector<Code> e2vc = e2->toVm();
+    vc.insert(vc.end(), e1vc.begin(), e1vc.end());
+    vc.insert(vc.end(), e2vc.begin(), e2vc.end());
+    vc.push_back(newPlus());
+    return vc;
 }
 
 
@@ -73,6 +89,15 @@ string MultExp::smartPretty() {
     return s;
 }
 
+vector<Code> MultExp::toVm() {
+    vector<Code> vc;
+    vector<Code> e1vc = e1->toVm();
+    vector<Code> e2vc = e2->toVm();
+    vc.insert(vc.end(), e1vc.begin(), e1vc.end());
+    vc.insert(vc.end(), e2vc.begin(), e2vc.end());
+    vc.push_back(newMult());
+    return vc;
+}
 
 
 

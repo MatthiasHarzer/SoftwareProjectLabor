@@ -3,15 +3,15 @@
 
 
 Code newPush(int i) {
-    return Code(PUSH, i);
+    return Code(VM_PUSH, i);
 }
 
 Code newPlus() {
-    return Code(PLUS);
+    return Code(VM_PLUS);
 }
 
 Code newMult() {
-    return Code(MULT);
+    return Code(VM_MULT);
 }
 
 
@@ -23,10 +23,10 @@ Optional<int> VM::run() {
 
     for(int i = 0; i < code.size(); i++) {
         switch(code[i].kind) {
-            case PUSH:
+            case VM_PUSH:
                 s.push(code[i].val);
                 break;
-            case MULT: {
+            case VM_MULT: {
                 int right = s.top();
                 s.pop();
                 int left = s.top();
@@ -34,7 +34,7 @@ Optional<int> VM::run() {
                 s.push(left * right);
                 break;
             }
-            case PLUS: {
+            case VM_PLUS: {
                 int right = s.top();
                 s.pop();
                 int left = s.top();

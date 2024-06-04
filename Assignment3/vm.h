@@ -24,9 +24,9 @@ Stack-based VM, instructions supported are:
 
 
 typedef enum {
-    PUSH,
-    PLUS,
-    MULT
+    VM_PUSH,
+    VM_PLUS,
+    VM_MULT
 
 } OpCode_t;
 

@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <memory>
+#include "vm.h"
 
 using namespace std;
 
@@ -15,6 +16,7 @@ public:
     virtual int eval() = 0;
     virtual string pretty() = 0;
     virtual string smartPretty() = 0;
+    virtual vector<Code> toVm() = 0;
 };
 
 class IntExp : public Exp {
@@ -24,6 +26,7 @@ public:
     int eval();
     string pretty();
     string smartPretty();
+    vector<Code> toVm();
 };
 
 class PlusExp : public Exp {
@@ -36,6 +39,7 @@ public:
     int eval();
     string pretty();
     string smartPretty();
+    vector<Code> toVm();
 };
 
 
@@ -49,6 +53,7 @@ public:
     int eval();
     string pretty();
     string smartPretty();
+    vector<Code> toVm();
 };
 
 // Short-hands

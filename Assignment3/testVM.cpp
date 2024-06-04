@@ -4,14 +4,27 @@
 using namespace std;
 
 #include "vm.h"
+#include "ast.h"
+#include "parser.h"
 
 void showVMRes(Optional<int> r) {
     if(r.isNothing())
         cout << "\nVM stack (top): empty";
 
     cout << "\nVM stack (top):" << r.fromJust();
+}
 
+void parse(const string& exp) {
+    Optional<EXP> e = Parser(exp).parse();
+    if (e.isNothing()){
+        cout << exp << " is nothing \n";
+        return;
+    }
 
+    auto root = e.fromJust();
+    auto res = VM((e.fromJust())->toVm()).run();
+
+    cout << "Orig: " << exp << " | Parsed: " << root->smartPretty() << " = " << res.fromJust() << "\n";
 }
 
 void testVM() {
@@ -41,12 +54,24 @@ void testVM() {
 
         showVMRes(res);
     }
+
+    parse("1");
+
+    parse("1 + 0 ");
+
+    parse("1 + (0) ");
+    parse("1 + 2 * 0 ");
+    parse("1 * 2 + 0 ");
+    parse("1 + 2 * 2");
+    parse("(1 + 2) * 2");
+    parse("(1 + 2) * 2 * (2 * (1 + 0))");
+    parse("(1 + 2) * 0 + 2");
 }
 
 
-//int main() {
-//
-//    testVM();
-//
-//    return 1;
-//}
+int main() {
+
+    testVM();
+
+    return 1;
+}
