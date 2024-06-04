@@ -22,7 +22,8 @@ void parse(const string& exp) {
     }
 
     auto root = e.fromJust();
-    auto res = VM((e.fromJust())->toVm()).run();
+    auto vm = VM((e.fromJust())->toVm());
+    auto res = vm.run();
 
     cout << "Orig: " << exp << " | Parsed: " << root->smartPretty() << " = " << res.fromJust() << "\n";
 }
@@ -66,6 +67,7 @@ void testVM() {
     parse("(1 + 2) * 2");
     parse("(1 + 2) * 2 * (2 * (1 + 0))");
     parse("(1 + 2) * 0 + 2");
+    parse("2*2*2*2*2*2*2*2");
 }
 
 
